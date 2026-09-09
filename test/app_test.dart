@@ -28,4 +28,21 @@ void main() {
     expect(find.text('课表数据'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+  testWidgets('重新打开周课表会回到当前周', (tester) async {
+    final controller = ScheduleController(ScheduleStore())..loading = false;
+    await tester.pumpWidget(ReScheduleApp(controller: controller));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.calendar_view_week_outlined));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('下一周'));
+    await tester.pumpAndSettle();
+    expect(find.text('第 2 周'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.settings_outlined));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.calendar_view_week_outlined));
+    await tester.pumpAndSettle();
+    expect(find.text('第 1 周'), findsOneWidget);
+  });
 }

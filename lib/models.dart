@@ -16,12 +16,26 @@ class PeriodTime {
   );
 }
 
+const defaultPeriodTimes = <int, PeriodTime>{
+  1: PeriodTime(start: '08:30', end: '09:15'),
+  2: PeriodTime(start: '09:20', end: '10:05'),
+  3: PeriodTime(start: '10:25', end: '11:10'),
+  4: PeriodTime(start: '11:15', end: '12:00'),
+  5: PeriodTime(start: '13:30', end: '14:15'),
+  6: PeriodTime(start: '14:20', end: '15:05'),
+  7: PeriodTime(start: '15:20', end: '16:05'),
+  8: PeriodTime(start: '16:05', end: '16:50'),
+  9: PeriodTime(start: '17:50', end: '18:35'),
+  10: PeriodTime(start: '18:35', end: '19:20'),
+  11: PeriodTime(start: '19:30', end: '20:15'),
+};
+
 class SemesterSettings {
   const SemesterSettings({
     this.name = '',
     this.startDate,
     this.totalWeeks,
-    this.periodTimes = const {},
+    this.periodTimes = defaultPeriodTimes,
     this.theme = AppThemePreference.system,
   });
 
@@ -79,12 +93,14 @@ class SemesterSettings {
       name: map['name'] as String? ?? '',
       startDate: DateTime.tryParse(map['start_date'] as String? ?? ''),
       totalWeeks: map['total_weeks'] as int?,
-      periodTimes: rawTimes.map(
-        (key, value) => MapEntry(
-          int.parse(key),
-          PeriodTime.fromJson(Map<String, Object?>.from(value as Map)),
-        ),
-      ),
+      periodTimes: rawTimes.isEmpty
+          ? defaultPeriodTimes
+          : rawTimes.map(
+              (key, value) => MapEntry(
+                int.parse(key),
+                PeriodTime.fromJson(Map<String, Object?>.from(value as Map)),
+              ),
+            ),
       theme: AppThemePreference.values.firstWhere(
         (value) => value.name == map['theme'],
         orElse: () => AppThemePreference.system,

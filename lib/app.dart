@@ -19,6 +19,25 @@ const _courseColors = <Color>[
 ];
 
 const _weekdayNames = ['一', '二', '三', '四', '五', '六', '日'];
+List<Course> weekCoursesForDisplay(Iterable<Course> courses, int week) {
+  final active = courses
+      .where((course) => course.weeks.contains(week))
+      .toList();
+  final visible = [...active];
+  for (final course in courses.where(
+    (course) => !course.weeks.contains(week),
+  )) {
+    if (!visible.any((shown) => _coursesOverlap(course, shown))) {
+      visible.add(course);
+    }
+  }
+  return visible;
+}
+
+bool _coursesOverlap(Course a, Course b) =>
+    a.dayOfWeek == b.dayOfWeek &&
+    a.startPeriod <= b.endPeriod &&
+    b.startPeriod <= a.endPeriod;
 
 class ReScheduleApp extends StatelessWidget {
   const ReScheduleApp({super.key, required this.controller});
@@ -74,12 +93,13 @@ class HomeShell extends StatefulWidget {
 
 class _HomeShellState extends State<HomeShell> {
   var _index = 0;
+  var _weekPageVersion = 0;
 
   @override
   Widget build(BuildContext context) {
     final pages = [
       TodayPage(controller: widget.controller),
-      WeekPage(controller: widget.controller),
+      WeekPage(key: ValueKey(_weekPageVersion), controller: widget.controller),
       SettingsPage(controller: widget.controller),
     ];
     return Scaffold(
@@ -89,7 +109,10 @@ class _HomeShellState extends State<HomeShell> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-        onDestinationSelected: (value) => setState(() => _index = value),
+        onDestinationSelected: (value) => setState(() {
+          _index = value;
+          if (value == 1) _weekPageVersion++;
+        }),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.today_outlined),
@@ -403,8 +426,7 @@ class _WeekPageState extends State<WeekPage> {
         child: _WeekGrid(
           controller: widget.controller,
           week: _week,
-          onCourseTap: (course) =>
-              _editCourse(context, widget.controller, course),
+          onCourseTap: (course) => _showWeekCourseInfo(context, course),
         ),
       ),
     );
@@ -487,7 +509,10 @@ class _WeekGrid extends StatelessWidget {
                         ),
                       ),
                     ),
-                for (final course in controller.courses)
+                for (final course in weekCoursesForDisplay(
+                  controller.courses,
+                  week,
+                ))
                   Positioned(
                     left: periodWidth + (course.dayOfWeek - 1) * dayWidth + 3,
                     top:
@@ -559,9 +584,15 @@ class _WeekCourseCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (!active)
-                const Text(
-                  '非本周',
-                  style: TextStyle(fontSize: 9, color: Colors.blueGrey),
+                const FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '非本周',
+                    maxLines: 1,
+                    softWrap: false,
+                    style: TextStyle(fontSize: 9, color: Colors.blueGrey),
+                  ),
                 ),
               Text(
                 course.name,
@@ -743,6 +774,30 @@ class _EmptyState extends StatelessWidget {
         const SizedBox(height: 8),
         Text(message, textAlign: TextAlign.center),
       ],
+    ),
+  );
+}
+
+void _showWeekCourseInfo(BuildContext context, Course course) {
+  showModalBottomSheet<void>(
+    context: context,
+    showDragHandle: true,
+    builder: (context) => SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 28),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(course.name, style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 16),
+            Text(
+              course.location.isEmpty ? '上课地点未设置' : '上课地点：${course.location}',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      ),
     ),
   );
 }

@@ -3,10 +3,36 @@ import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:re_schedule/app.dart' show weekCoursesForDisplay;
 import 'package:re_schedule/importers.dart';
 import 'package:re_schedule/models.dart';
 
 void main() {
+  test('默认节次时间使用参考作息表', () {
+    const settings = SemesterSettings();
+    expect(settings.periodTimes[1]?.start, '08:30');
+    expect(settings.periodTimes[8]?.end, '16:50');
+    expect(settings.periodTimes[11]?.end, '20:15');
+  });
+  test('非本周课程不覆盖同一时段的当周课程', () {
+    Course course(String id, String name, Set<int> weeks, int start, int end) =>
+        Course(
+          id: id,
+          name: name,
+          dayOfWeek: 1,
+          startPeriod: start,
+          endPeriod: end,
+          weeks: weeks,
+        );
+    final current = course('current', '当周课', {1}, 3, 4);
+    final overlapping = course('other', '非本周冲突课', {2}, 3, 4);
+    final separate = course('separate', '非本周空闲课', {2}, 5, 6);
+
+    expect(weekCoursesForDisplay([current, overlapping, separate], 1), [
+      current,
+      separate,
+    ]);
+  });
   group('教学周计算', () {
     const settings = SemesterSettings();
 

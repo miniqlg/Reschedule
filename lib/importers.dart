@@ -361,7 +361,7 @@ class PdfScheduleImporter {
         .startsWith('%PDF-')) {
       return _fatal('文件不是有效的 PDF');
     }
-    final fragments = <_PositionedText>[];
+    final courses = <Course>[];
     final allText = StringBuffer();
     try {
       final document = await PdfDocument.openData(
@@ -373,6 +373,7 @@ class PdfScheduleImporter {
         try {
           for (final page in document.pages) {
             final text = await page.loadStructuredText();
+            final pageFragments = <_PositionedText>[];
             allText.writeln(text.fullText);
             final weekdayFragments = text.fragments
                 .where((fragment) => _weekday(fragment.text) != null)
@@ -385,7 +386,7 @@ class PdfScheduleImporter {
             );
             final dayAxisIsTop = topSpread > leftSpread;
             for (final fragment in text.fragments) {
-              fragments.add(
+              pageFragments.add(
                 _PositionedText(
                   fragment.text.trim(),
                   dayAxisIsTop ? fragment.bounds.top : fragment.bounds.left,
@@ -393,9 +394,10 @@ class PdfScheduleImporter {
                 ),
               );
             }
+            courses.addAll(_parsePositioned(pageFragments));
           }
         } catch (_) {
-          fragments.clear();
+          courses.clear();
         }
       } finally {
         await document.dispose();
@@ -405,16 +407,17 @@ class PdfScheduleImporter {
       // supports the known offline timetable export.
     }
     try {
-      var courses = _parsePositioned(fragments);
       var semester = CourseTextParser.semesterName(allText.toString());
       if (courses.isEmpty) {
         final fallback = _LegacyPdfTextExtractor.extract(bytes);
-        courses = _parsePositioned(fallback);
+        courses.addAll(_parsePositioned(fallback));
         semester ??= CourseTextParser.semesterName(
           fallback.map((item) => item.text).join(' '),
         );
       }
-      return _validated(courses, semester);
+      final seen = <String>{};
+      final merged = courses.where((course) => seen.add('||||')).toList();
+      return _validated(merged, semester);
     } catch (_) {
       return _fatal('PDF 文件损坏、加密、为扫描件或版式不受支持');
     }
