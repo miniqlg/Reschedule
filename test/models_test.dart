@@ -137,40 +137,41 @@ void main() {
     expect(draft.courses.last.weeks, {2, 4, 6, 8});
   });
 
-  test('解析同一时段不同周次的 XLSX 课程块', () {
+  test('同一 Excel 单元格可解析不同周次的多门课程', () {
     final archive = Archive()
       ..add(
         ArchiveFile.string('xl/worksheets/sheet1.xml', '''
 <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
   <sheetData>
-    <row r="1"><c r="A1" t="inlineStr"><is><t>节次</t></is></c><c r="B1" t="inlineStr"><is><t>星期一</t></is></c><c r="C1" t="inlineStr"><is><t>星期二</t></is></c></row>
-    <row r="2"><c r="A2"><v>5</v></c><c r="B2" t="inlineStr"><is><t>专业英语（电气）
+    <row r="1">
+      <c r="A1" t="inlineStr"><is><t>节次</t></is></c>
+      <c r="B1" t="inlineStr"><is><t>星期一</t></is></c>
+      <c r="C1" t="inlineStr"><is><t>星期二</t></is></c>
+    </row>
+    <row r="2">
+      <c r="A2"><v>5</v></c>
+      <c r="B2" t="inlineStr"><is><t>专业英语（电气）★
 (5-6节)1-8周/场地:弘E306/教师:杜春燕/重修标记:
-高电压技术
-(5-6节)9-16周/场地:弘E101/教师:王伟朝/重修标记:</t></is></c></row>
+高电压技术★
+(5-6节)9-16周/场地:弘E101/教师:王伟朝/重修标记:</t></is></c>
+    </row>
     <row r="3"><c r="A3"><v>6</v></c></row>
   </sheetData>
   <mergeCells count="1"><mergeCell ref="B2:B3"/></mergeCells>
 </worksheet>
 '''),
       );
+
     final draft = XlsxScheduleImporter().parse(
       ZipEncoder().encodeBytes(archive),
     );
 
+    expect(draft.hasFatalIssues, isFalse);
     expect(draft.courses, hasLength(2));
-    expect(
-      draft.courses.map((course) => course.name),
-      containsAll(['专业英语（电气）', '高电压技术']),
-    );
-    expect(
-      draft.courses.singleWhere((course) => course.name == '专业英语（电气）').weeks,
-      {1, 2, 3, 4, 5, 6, 7, 8},
-    );
-    expect(
-      draft.courses.singleWhere((course) => course.name == '高电压技术').weeks,
-      {9, 10, 11, 12, 13, 14, 15, 16},
-    );
+    expect(draft.courses[0].name, '专业英语（电气）★');
+    expect(draft.courses[0].weeks, {1, 2, 3, 4, 5, 6, 7, 8});
+    expect(draft.courses[1].name, '高电压技术★');
+    expect(draft.courses[1].weeks, {9, 10, 11, 12, 13, 14, 15, 16});
   });
 
   test('解析无 ToUnicode 的 UniGB UTF-16BE PDF 内容流', () async {

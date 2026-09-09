@@ -98,28 +98,51 @@ class CourseTextParser {
       .firstMatch(text)
       ?.group(1)
       ?.replaceAll(RegExp(r'\s+'), '');
-  static Iterable<Course> parseBlocks(
+
+  static List<Course> parseBlocks(
     String raw, {
     required int dayOfWeek,
     int? fallbackPeriod,
     int colorIndex = 0,
-  }) sync* {
-    final blocks = raw.split(
-      RegExp(
-        r'(?=^[ \t]*[^\r\n]+(?:\r?\n)+[ \t]*[（(]\s*\d{1,2}\s*[-—~～至]\s*\d{1,2}\s*节)',
-        multiLine: true,
-      ),
-    );
-    var index = 0;
-    for (final block in blocks) {
+  }) {
+    final text = raw.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
+    final periods = _periodPattern.allMatches(text).toList();
+    if (periods.length < 2) {
       final course = parseBlock(
-        block,
+        text,
         dayOfWeek: dayOfWeek,
         fallbackPeriod: fallbackPeriod,
-        colorIndex: colorIndex + index++,
+        colorIndex: colorIndex,
       );
-      if (course != null) yield course;
+      return course == null ? const [] : [course];
     }
+
+    final starts = <int>[0];
+    for (final period in periods.skip(1)) {
+      final beforePeriod = text.lastIndexOf('\n', period.start);
+      final lineStart = beforePeriod + 1;
+      final periodLinePrefix = text.substring(lineStart, period.start).trim();
+      if (periodLinePrefix.isNotEmpty) {
+        starts.add(lineStart);
+      } else {
+        starts.add(text.lastIndexOf('\n', beforePeriod - 1) + 1);
+      }
+    }
+
+    final courses = <Course>[];
+    for (var index = 0; index < starts.length; index++) {
+      final course = parseBlock(
+        text.substring(
+          starts[index],
+          index + 1 < starts.length ? starts[index + 1] : text.length,
+        ),
+        dayOfWeek: dayOfWeek,
+        fallbackPeriod: fallbackPeriod,
+        colorIndex: colorIndex + index,
+      );
+      if (course != null) courses.add(course);
+    }
+    return courses;
   }
 
   static Set<int> parseWeeks(String text) {
@@ -194,12 +217,13 @@ class XlsxScheduleImporter {
           final raw = _cellText(sheet, row, entry.key);
           if (raw.isEmpty) continue;
           final fallback = int.tryParse(_cellText(sheet, row, periodColumn));
-          for (final course in CourseTextParser.parseBlocks(
+          final parsed = CourseTextParser.parseBlocks(
             raw,
             dayOfWeek: entry.value,
             fallbackPeriod: fallback,
             colorIndex: courses.length % 8,
-          )) {
+          );
+          for (final course in parsed) {
             final key =
                 '${course.dayOfWeek}|${course.startPeriod}|${course.endPeriod}|${course.name}|${course.weeks.join(',')}';
             if (seen.add(key)) courses.add(course);
