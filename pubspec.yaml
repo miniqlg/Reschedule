@@ -1,7 +1,7 @@
 name: re_schedule
 description: Re课表 - 离线导入 Excel/PDF 的移动课表
 publish_to: none
-version: 1.0.2+3
+version: 1.0.3+4
 
 environment:
   sdk: ">=3.10.0 <4.0.0"
