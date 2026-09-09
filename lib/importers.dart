@@ -416,7 +416,13 @@ class PdfScheduleImporter {
         );
       }
       final seen = <String>{};
-      final merged = courses.where((course) => seen.add('||||')).toList();
+      final merged = courses
+          .where(
+            (course) => seen.add(
+              '${course.dayOfWeek}|${course.startPeriod}|${course.name}|${course.weeks.join(',')}',
+            ),
+          )
+          .toList();
       return _validated(merged, semester);
     } catch (_) {
       return _fatal('PDF 文件损坏、加密、为扫描件或版式不受支持');

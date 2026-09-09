@@ -156,6 +156,9 @@ void main() {
       ..writeln('1 0 0 1 100 600 Tm (${literal('合成课程')}) Tj')
       ..writeln('1 0 0 1 100 590 Tm (${literal('(1-2节)1-4周')}) Tj')
       ..writeln('1 0 0 1 100 580 Tm (${literal('/场地:教室101/教师:张老师')}) Tj')
+      ..writeln('1 0 0 1 200 600 Tm (${literal('第二门课程')}) Tj')
+      ..writeln('1 0 0 1 200 590 Tm (${literal('(3-4节)2-5周')}) Tj')
+      ..writeln('1 0 0 1 200 580 Tm (${literal('/场地:教室202/教师:李老师')}) Tj')
       ..writeln('ET');
     final compressed = ZLibEncoder().encode(utf8.encode(commands.toString()));
     final prefix = latin1.encode('''%PDF-1.4
@@ -168,10 +171,12 @@ stream
 
     final draft = await PdfScheduleImporter().parse(bytes);
     expect(draft.hasFatalIssues, isFalse);
-    expect(draft.courses, hasLength(1));
-    expect(draft.courses.single.name, '合成课程');
-    expect(draft.courses.single.teacher, '张老师');
-    expect(draft.courses.single.location, '教室101');
-    expect(draft.courses.single.weeks, {1, 2, 3, 4});
+    expect(draft.courses, hasLength(2));
+    expect(draft.courses.first.name, '合成课程');
+    expect(draft.courses.first.teacher, '张老师');
+    expect(draft.courses.first.location, '教室101');
+    expect(draft.courses.first.weeks, {1, 2, 3, 4});
+    expect(draft.courses.last.name, '第二门课程');
+    expect(draft.courses.last.weeks, {2, 3, 4, 5});
   });
 }
