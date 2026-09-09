@@ -256,56 +256,83 @@ class _TodayCourseCard extends StatelessWidget {
     final color = _courseColors[course.colorIndex % _courseColors.length];
     final start = settings.periodTimes[course.startPeriod]?.start;
     final end = settings.periodTimes[course.endPeriod]?.end;
-    final time = start?.isNotEmpty == true && end?.isNotEmpty == true
-        ? '$start–$end'
-        : '第${course.startPeriod}–${course.endPeriod}节';
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    final hasTime = start?.isNotEmpty == true && end?.isNotEmpty == true;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 76,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                width: 5,
-                height: 72,
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(4),
-                ),
+              Text(
+                '第${course.startPeriod}${course.endPeriod == course.startPeriod ? '' : '–${course.endPeriod}'}节',
+                style: Theme.of(
+                  context,
+                ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700),
               ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      course.name,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      '$time${course.location.isEmpty ? '' : ' · ${course.location}'}',
-                    ),
-                    if (course.teacher.isNotEmpty) ...[
-                      const SizedBox(height: 4),
-                      Text(
-                        course.teacher,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ],
-                ),
+              const SizedBox(height: 6),
+              Text(
+                hasTime ? start! : '未设置',
+                style: Theme.of(context).textTheme.bodySmall,
               ),
-              const Icon(Icons.chevron_right),
+              if (hasTime) ...[
+                const SizedBox(height: 2),
+                Text(end!, style: Theme.of(context).textTheme.bodySmall),
+              ],
             ],
           ),
         ),
-      ),
+        Expanded(
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: onTap,
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 5,
+                      height: 72,
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            course.name,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                          ),
+                          if (course.location.isNotEmpty) ...[
+                            const SizedBox(height: 8),
+                            Text('上课地点：${course.location}'),
+                          ],
+                          if (course.teacher.isNotEmpty) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              '上课教师：${course.teacher}',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.chevron_right),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
