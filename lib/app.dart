@@ -580,43 +580,49 @@ class _WeekCourseCard extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(7),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (!active)
-                const FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '非本周',
-                    maxLines: 1,
-                    softWrap: false,
-                    style: TextStyle(fontSize: 9, color: Colors.blueGrey),
-                  ),
-                ),
-              Text(
-                course.name,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: active ? Colors.white : Colors.blueGrey,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12,
+          child: LayoutBuilder(
+            builder: (context, constraints) => FittedBox(
+              alignment: Alignment.topLeft,
+              fit: BoxFit.scaleDown,
+              child: SizedBox(
+                width: constraints.maxWidth,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (!active)
+                      const FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '非本周',
+                          maxLines: 1,
+                          softWrap: false,
+                          style: TextStyle(fontSize: 9, color: Colors.blueGrey),
+                        ),
+                      ),
+                    Text(
+                      course.name,
+                      style: TextStyle(
+                        color: active ? Colors.white : Colors.blueGrey,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                      ),
+                    ),
+                    if (course.location.isNotEmpty) ...[
+                      const SizedBox(height: 3),
+                      Text(
+                        course.location,
+                        style: TextStyle(
+                          color: active ? Colors.white : Colors.blueGrey,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ),
-              if (course.location.isNotEmpty) ...[
-                const SizedBox(height: 3),
-                Text(
-                  course.location,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: active ? Colors.white : Colors.blueGrey,
-                    fontSize: 10,
-                  ),
-                ),
-              ],
-            ],
+            ),
           ),
         ),
       ),
