@@ -88,22 +88,23 @@ class _HomeShellState extends State<HomeShell> {
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
         onDestinationSelected: (value) => setState(() => _index = value),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.today_outlined),
             selectedIcon: Icon(Icons.today),
-            label: '今天',
+            label: '',
           ),
           NavigationDestination(
             icon: Icon(Icons.calendar_view_week_outlined),
             selectedIcon: Icon(Icons.calendar_view_week),
-            label: '本周',
+            label: '',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),
             selectedIcon: Icon(Icons.settings),
-            label: '设置',
+            label: '',
           ),
         ],
       ),
@@ -157,7 +158,7 @@ class TodayPage extends StatelessWidget {
                   title: '先设置开学日期',
                   message: '完成学期设置后，今天的课程会自动出现。',
                 )
-              else if (week != null && week < 1)
+              else if (week != null && week! < 1)
                 const _EmptyState(
                   icon: Icons.hourglass_top,
                   title: '学期还没开始',
@@ -220,7 +221,11 @@ class _WeekHero extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                _weekLabel(week),
+                week == null
+                    ? '待设置'
+                    : week! < 1
+                    ? '开学前'
+                    : '第 $week 周',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 30,
@@ -305,6 +310,19 @@ class _TodayCourseCard extends StatelessWidget {
   }
 }
 
+DateTime _weekStart(SemesterSettings settings, int week) {
+  final date = settings.startDate;
+  if (date != null) return date.add(Duration(days: (week - 1) * 7));
+  final now = DateTime.now();
+  return now.subtract(Duration(days: now.weekday - 1));
+}
+
+String _weekLabel(int? week) {
+  if (week == null) return '待设置';
+  if (week! < 1) return '开学前';
+  return '第 $week 周';
+}
+
 class WeekPage extends StatefulWidget {
   const WeekPage({super.key, required this.controller});
   final ScheduleController controller;
@@ -377,13 +395,14 @@ class _WeekGrid extends StatelessWidget {
   final ValueChanged<Course> onCourseTap;
 
   static const periodWidth = 46.0;
-  static const dayWidth = 126.0;
+  static const dayWidth = 44.0;
   static const headerHeight = 46.0;
   static const rowHeight = 68.0;
 
   @override
   Widget build(BuildContext context) {
     const width = periodWidth + dayWidth * 7;
+    final weekStart = _weekStart(controller.settings, week);
     const height = headerHeight + rowHeight * 11;
     return Scrollbar(
       child: SingleChildScrollView(
@@ -408,7 +427,20 @@ class _WeekGrid extends StatelessWidget {
                     top: headerHeight + (period - 1) * rowHeight,
                     width: periodWidth,
                     height: rowHeight,
-                    child: _GridLabel(label: '$period'),
+                    child: InkWell(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              PeriodTimesPage(controller: controller),
+                        ),
+                      ),
+                      child: _GridLabel(
+                        label: _periodLabel(
+                          period,
+                          controller.settings.periodTimes[period],
+                        ),
+                      ),
+                    ),
                   ),
                 for (var day = 1; day <= 7; day++)
                   for (var period = 1; period <= 11; period++)
@@ -428,9 +460,7 @@ class _WeekGrid extends StatelessWidget {
                         ),
                       ),
                     ),
-                for (final course in controller.courses.where(
-                  (course) => course.weeks.contains(week),
-                ))
+                for (final course in controller.courses)
                   Positioned(
                     left: periodWidth + (course.dayOfWeek - 1) * dayWidth + 3,
                     top:
@@ -442,6 +472,7 @@ class _WeekGrid extends StatelessWidget {
                         6,
                     child: _WeekCourseCard(
                       course: course,
+                      active: course.weeks.contains(week),
                       onTap: () => onCourseTap(course),
                     ),
                   ),
@@ -452,6 +483,13 @@ class _WeekGrid extends StatelessWidget {
       ),
     );
   }
+}
+
+String _periodLabel(int period, PeriodTime? time) {
+  if (time == null || time.start.isEmpty || time.end.isEmpty) {
+    return '$period\n未设置';
+  }
+  return '$period\n${time.start}\n${time.end}';
 }
 
 class _GridLabel extends StatelessWidget {
@@ -469,14 +507,21 @@ class _GridLabel extends StatelessWidget {
 }
 
 class _WeekCourseCard extends StatelessWidget {
-  const _WeekCourseCard({required this.course, required this.onTap});
+  const _WeekCourseCard({
+    required this.course,
+    required this.active,
+    required this.onTap,
+  });
   final Course course;
+  final bool active;
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
-    final color = _courseColors[course.colorIndex % _courseColors.length];
+    final color = active
+        ? _courseColors[course.colorIndex % _courseColors.length]
+        : Colors.blueGrey;
     return Material(
-      color: color.withValues(alpha: 0.92),
+      color: color.withValues(alpha: active ? 0.92 : 0.18),
       borderRadius: BorderRadius.circular(10),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -486,12 +531,17 @@ class _WeekCourseCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (!active)
+                const Text(
+                  '非本周',
+                  style: TextStyle(fontSize: 9, color: Colors.blueGrey),
+                ),
               Text(
                 course.name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: active ? Colors.white : Colors.blueGrey,
                   fontWeight: FontWeight.w700,
                   fontSize: 12,
                 ),
@@ -502,7 +552,10 @@ class _WeekCourseCard extends StatelessWidget {
                   course.location,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                  style: TextStyle(
+                    color: active ? Colors.white : Colors.blueGrey,
+                    fontSize: 10,
+                  ),
                 ),
               ],
             ],
@@ -676,20 +729,14 @@ Future<void> _editCourse(
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
-    builder: (_) => CourseEditor(
-      course: original,
-      onDelete: original == null
-          ? null
-          : () => controller.deleteCourse(original.id),
-    ),
+    builder: (_) => CourseEditor(course: original),
   );
   if (course != null) await controller.saveCourse(course);
 }
 
 class CourseEditor extends StatefulWidget {
-  const CourseEditor({super.key, this.course, this.onDelete});
+  const CourseEditor({super.key, this.course});
   final Course? course;
-  final Future<void> Function()? onDelete;
 
   @override
   State<CourseEditor> createState() => _CourseEditorState();
@@ -840,21 +887,7 @@ class _CourseEditorState extends State<CourseEditor> {
             ],
           ),
           const SizedBox(height: 20),
-          Row(
-            children: [
-              if (widget.onDelete != null) ...[
-                OutlinedButton.icon(
-                  onPressed: _delete,
-                  icon: const Icon(Icons.delete_outline),
-                  label: const Text('删除'),
-                ),
-                const SizedBox(width: 12),
-              ],
-              Expanded(
-                child: FilledButton(onPressed: _save, child: const Text('保存')),
-              ),
-            ],
-          ),
+          FilledButton(onPressed: _save, child: const Text('保存')),
         ],
       ),
     ),
@@ -905,29 +938,6 @@ class _CourseEditorState extends State<CourseEditor> {
         notes: _notes.text.trim(),
       ),
     );
-  }
-
-  Future<void> _delete() async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('删除课程？'),
-        content: Text('将删除“${widget.course?.name ?? ''}”。'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('取消'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('删除'),
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true) return;
-    await widget.onDelete?.call();
-    if (mounted) Navigator.pop(context);
   }
 }
 
@@ -1078,7 +1088,7 @@ class _SemesterEditorState extends State<SemesterEditor> {
         ],
       ),
     );
-    if (week == null || week < 1 || week > 60) return;
+    if (week == null || week! < 1 || week > 60) return;
     final today = DateTime.now();
     final thisMonday = today.subtract(Duration(days: today.weekday - 1));
     setState(
@@ -1166,14 +1176,12 @@ class _PeriodTimesPageState extends State<PeriodTimesPage> {
     if (start == null || !mounted) return;
     final end = await showTimePicker(
       context: context,
-      initialTime: _parseTime(current?.end) ?? _addMinutes(start, 45),
+      initialTime:
+          _parseTime(current?.end) ??
+          TimeOfDay(hour: start.hour, minute: (start.minute + 45) % 60),
       helpText: '第$period节结束时间',
     );
     if (end == null) return;
-    if (end.hour * 60 + end.minute <= start.hour * 60 + start.minute) {
-      if (mounted) _message(context, '结束时间必须晚于开始时间');
-      return;
-    }
     setState(
       () => _times[period] = PeriodTime(start: _time(start), end: _time(end)),
     );
@@ -1251,14 +1259,10 @@ class _ImportReviewPageState extends State<ImportReviewPage> {
   @override
   Widget build(BuildContext context) {
     final validation = _validated;
-    final originalIssues = widget.draft.issues.where(
-      (issue) => !(_courses.isNotEmpty && issue.message.startsWith('没有识别到课程')),
-    );
-    final issues = [...originalIssues, ...validation.issues]
+    final issues = [...widget.draft.issues, ...validation.issues]
         .fold<List<ImportIssue>>([], (unique, issue) {
-          if (!unique.any((item) => item.message == issue.message)) {
+          if (!unique.any((item) => item.message == issue.message))
             unique.add(issue);
-          }
           return unique;
         });
     final fatal = issues.any(
@@ -1320,7 +1324,7 @@ class _ImportReviewPageState extends State<ImportReviewPage> {
                 ),
                 title: Text(course.name),
                 subtitle: Text(
-                  '星期${_weekdayNames[course.dayOfWeek - 1]} 第${course.startPeriod}–${course.endPeriod}节\n'
+                  '星期${_weekdayNames[course.dayOfWeek - 1]} 第${course.startPeriod}–${course.endPeriod}节\\n'
                   '${_formatWeeks(course.weeks)}周${course.location.isEmpty ? '' : ' · ${course.location}'}',
                 ),
                 isThreeLine: true,
@@ -1426,15 +1430,4 @@ TimeOfDay? _parseTime(String? value) {
   return hour == null || minute == null
       ? null
       : TimeOfDay(hour: hour, minute: minute);
-}
-
-TimeOfDay _addMinutes(TimeOfDay value, int minutes) {
-  final total = (value.hour * 60 + value.minute + minutes) % (24 * 60);
-  return TimeOfDay(hour: total ~/ 60, minute: total % 60);
-}
-
-String _weekLabel(int? week) {
-  if (week == null) return '待设置';
-  if (week < 1) return '开学前';
-  return '第 $week 周';
 }

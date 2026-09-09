@@ -16,14 +16,14 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('今天'), findsWidgets);
-    expect(find.text('本周'), findsOneWidget);
-    expect(find.text('设置'), findsOneWidget);
+    expect(find.byIcon(Icons.calendar_view_week_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.settings_outlined), findsOneWidget);
 
-    await tester.tap(find.text('本周'));
+    await tester.tap(find.byIcon(Icons.calendar_view_week_outlined));
     await tester.pumpAndSettle();
     expect(find.text('本周课表'), findsOneWidget);
 
-    await tester.tap(find.text('设置'));
+    await tester.tap(find.byIcon(Icons.settings_outlined));
     await tester.pumpAndSettle();
     expect(find.text('课表数据'), findsOneWidget);
     expect(tester.takeException(), isNull);
