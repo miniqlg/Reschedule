@@ -444,7 +444,7 @@ class _WeekGrid extends StatelessWidget {
   final ValueChanged<Course> onCourseTap;
 
   static const periodWidth = 46.0;
-  static const dayWidth = 44.0;
+  static const dayWidth = 68.0;
   static const headerHeight = 46.0;
   static const rowHeight = 68.0;
 
@@ -582,12 +582,12 @@ class _WeekCourseCard extends StatelessWidget {
           padding: const EdgeInsets.all(7),
           child: LayoutBuilder(
             builder: (context, constraints) => FittedBox(
-              alignment: Alignment.topLeft,
+              alignment: Alignment.topCenter,
               fit: BoxFit.scaleDown,
               child: SizedBox(
                 width: constraints.maxWidth,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (!active)
@@ -603,19 +603,21 @@ class _WeekCourseCard extends StatelessWidget {
                       ),
                     Text(
                       course.name,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: active ? Colors.white : Colors.blueGrey,
                         fontWeight: FontWeight.w700,
-                        fontSize: 12,
+                        fontSize: 14,
                       ),
                     ),
                     if (course.location.isNotEmpty) ...[
                       const SizedBox(height: 3),
                       Text(
                         course.location,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: active ? Colors.white : Colors.blueGrey,
-                          fontSize: 10,
+                          fontSize: 13,
                         ),
                       ),
                     ],
