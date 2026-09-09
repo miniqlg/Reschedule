@@ -98,6 +98,29 @@ class CourseTextParser {
       .firstMatch(text)
       ?.group(1)
       ?.replaceAll(RegExp(r'\s+'), '');
+  static Iterable<Course> parseBlocks(
+    String raw, {
+    required int dayOfWeek,
+    int? fallbackPeriod,
+    int colorIndex = 0,
+  }) sync* {
+    final blocks = raw.split(
+      RegExp(
+        r'(?=^[ \t]*[^\r\n]+(?:\r?\n)+[ \t]*[（(]\s*\d{1,2}\s*[-—~～至]\s*\d{1,2}\s*节)',
+        multiLine: true,
+      ),
+    );
+    var index = 0;
+    for (final block in blocks) {
+      final course = parseBlock(
+        block,
+        dayOfWeek: dayOfWeek,
+        fallbackPeriod: fallbackPeriod,
+        colorIndex: colorIndex + index++,
+      );
+      if (course != null) yield course;
+    }
+  }
 
   static Set<int> parseWeeks(String text) {
     final normalized = text.replaceAll('，', ',').replaceAll('、', ',');
@@ -171,16 +194,16 @@ class XlsxScheduleImporter {
           final raw = _cellText(sheet, row, entry.key);
           if (raw.isEmpty) continue;
           final fallback = int.tryParse(_cellText(sheet, row, periodColumn));
-          final course = CourseTextParser.parseBlock(
+          for (final course in CourseTextParser.parseBlocks(
             raw,
             dayOfWeek: entry.value,
             fallbackPeriod: fallback,
             colorIndex: courses.length % 8,
-          );
-          if (course == null) continue;
-          final key =
-              '${course.dayOfWeek}|${course.startPeriod}|${course.endPeriod}|${course.name}|${course.weeks.join(',')}';
-          if (seen.add(key)) courses.add(course);
+          )) {
+            final key =
+                '${course.dayOfWeek}|${course.startPeriod}|${course.endPeriod}|${course.name}|${course.weeks.join(',')}';
+            if (seen.add(key)) courses.add(course);
+          }
         }
       }
       return _validated(
