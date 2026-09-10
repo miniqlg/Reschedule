@@ -1,0 +1,397 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.3.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :gradle:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle:compileKotlin UP-TO-DATE
+> Task :gradle:compileJava NO-SOURCE
+> Task :gradle:compileGroovy NO-SOURCE
+> Task :gradle:pluginDescriptors UP-TO-DATE
+> Task :gradle:processResources UP-TO-DATE
+> Task :gradle:classes UP-TO-DATE
+> Task :gradle:jar UP-TO-DATE
+
+> Configure project :app
+WARNING: The option setting 'android.overridePathCheck=true' is experimental.
+The current default is 'false'.
+WARNING: The option setting 'android.builtInKotlin=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+WARNING: The option setting 'android.newDsl=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+w: [33m[1mDeprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':app' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :android_file_picker
+w: [33m[1mDeprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':android_file_picker' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :jni
+w: [33m[1mDeprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':jni' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :jni_flutter
+w: [33m[1mDeprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':jni_flutter' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :sqflite_android
+w: [33m[1mDeprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':sqflite_android' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+
+> Configure project :url_launcher_android
+w: [33m[1mDeprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':url_launcher_android' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+
+> Task :app:ReleaseMinSdkCheck
+> Task :android_file_picker:preBuild UP-TO-DATE
+> Task :android_file_picker:preReleaseBuild UP-TO-DATE
+> Task :android_file_picker:mergeReleaseJniLibFolders
+> Task :android_file_picker:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:validateCompileSdkVersion
+> Task :app:preBuild
+> Task :app:preReleaseBuild
+> Task :android_file_picker:copyReleaseJniLibsProjectOnly
+> Task :app:configureCMakeRelease[arm64-v8a]
+> Task :app:buildCMakeRelease[arm64-v8a]
+> Task :app:configureCMakeRelease[armeabi-v7a]
+> Task :app:buildCMakeRelease[armeabi-v7a]
+> Task :app:configureCMakeRelease[x86_64]
+> Task :app:buildCMakeRelease[x86_64]
+> Task :app:compileFlutterBuildRelease
+> Task :app:copyJniLibsflutterBuildRelease
+> Task :app:mergeReleaseJniLibFolders
+> Task :jni:preBuild UP-TO-DATE
+> Task :jni:preReleaseBuild UP-TO-DATE
+> Task :jni:configureCMakeRelWithDebInfo[arm64-v8a]
+> Task :jni:buildCMakeRelWithDebInfo[arm64-v8a]
+> Task :jni:configureCMakeRelWithDebInfo[armeabi-v7a]
+> Task :jni:buildCMakeRelWithDebInfo[armeabi-v7a]
+> Task :jni:configureCMakeRelWithDebInfo[x86]
+> Task :jni:buildCMakeRelWithDebInfo[x86]
+> Task :jni:configureCMakeRelWithDebInfo[x86_64]
+> Task :jni:buildCMakeRelWithDebInfo[x86_64]
+> Task :jni:mergeReleaseJniLibFolders
+> Task :jni_flutter:preBuild UP-TO-DATE
+> Task :jni_flutter:preReleaseBuild UP-TO-DATE
+> Task :jni_flutter:mergeReleaseJniLibFolders
+> Task :jni_flutter:mergeReleaseNativeLibs NO-SOURCE
+> Task :sqflite_android:preBuild UP-TO-DATE
+> Task :jni_flutter:copyReleaseJniLibsProjectOnly
+> Task :sqflite_android:preReleaseBuild UP-TO-DATE
+> Task :sqflite_android:mergeReleaseJniLibFolders
+> Task :sqflite_android:mergeReleaseNativeLibs NO-SOURCE
+> Task :url_launcher_android:preBuild UP-TO-DATE
+> Task :url_launcher_android:preReleaseBuild UP-TO-DATE
+> Task :sqflite_android:copyReleaseJniLibsProjectOnly
+> Task :url_launcher_android:mergeReleaseJniLibFolders
+> Task :url_launcher_android:mergeReleaseNativeLibs NO-SOURCE
+> Task :android_file_picker:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :url_launcher_android:copyReleaseJniLibsProjectOnly
+> Task :android_file_picker:generateReleaseResources
+> Task :jni:mergeReleaseNativeLibs
+> Task :android_file_picker:packageReleaseResources
+> Task :android_file_picker:processReleaseNavigationResources
+> Task :jni:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :android_file_picker:javaPreCompileRelease
+> Task :jni:generateReleaseResources
+> Task :jni:copyReleaseJniLibsProjectOnly
+> Task :jni:packageReleaseResources
+> Task :android_file_picker:parseReleaseLocalResources
+> Task :jni:processReleaseNavigationResources
+> Task :jni_flutter:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :jni:javaPreCompileRelease
+> Task :jni:parseReleaseLocalResources
+> Task :jni_flutter:generateReleaseResources
+> Task :android_file_picker:generateReleaseRFile
+> Task :jni:generateReleaseRFile
+> Task :jni_flutter:packageReleaseResources
+> Task :jni:compileReleaseKotlin NO-SOURCE
+> Task :jni:compileReleaseJavaWithJavac
+> Task :jni_flutter:processReleaseNavigationResources
+> Task :jni_flutter:javaPreCompileRelease
+> Task :jni:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :jni_flutter:parseReleaseLocalResources
+> Task :jni:bundleLibCompileToJarRelease
+> Task :sqflite_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :jni:exportReleaseConsumerProguardFiles
+> Task :sqflite_android:generateReleaseResources
+> Task :jni_flutter:generateReleaseRFile
+> Task :sqflite_android:packageReleaseResources
+> Task :jni_flutter:compileReleaseKotlin NO-SOURCE
+> Task :app:mergeReleaseNativeLibs
+> Task :jni_flutter:compileReleaseJavaWithJavac
+> Task :jni_flutter:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :sqflite_android:processReleaseNavigationResources
+> Task :jni_flutter:exportReleaseConsumerProguardFiles
+> Task :url_launcher_android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :sqflite_android:javaPreCompileRelease
+> Task :sqflite_android:parseReleaseLocalResources
+> Task :url_launcher_android:generateReleaseBuildConfig
+> Task :url_launcher_android:generateReleaseResources
+> Task :sqflite_android:generateReleaseRFile
+> Task :url_launcher_android:packageReleaseResources
+> Task :sqflite_android:compileReleaseKotlin NO-SOURCE
+> Task :app:stripReleaseDebugSymbols
+> Task :sqflite_android:compileReleaseJavaWithJavac
+> Task :sqflite_android:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :sqflite_android:exportReleaseConsumerProguardFiles UP-TO-DATE
+> Task :url_launcher_android:processReleaseNavigationResources
+> Task :url_launcher_android:javaPreCompileRelease
+> Task :url_launcher_android:parseReleaseLocalResources
+> Task :app:buildKotlinToolingMetadata
+> Task :url_launcher_android:generateReleaseRFile
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:extractReleaseNativeSymbolTables
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:cleanMergeReleaseAssets UP-TO-DATE
+> Task :android_file_picker:generateReleaseAssets UP-TO-DATE
+> Task :android_file_picker:mergeReleaseAssets
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :jni:generateReleaseAssets UP-TO-DATE
+> Task :jni:mergeReleaseAssets
+> Task :jni_flutter:generateReleaseAssets UP-TO-DATE
+> Task :jni_flutter:mergeReleaseAssets
+> Task :sqflite_android:generateReleaseAssets UP-TO-DATE
+> Task :sqflite_android:mergeReleaseAssets
+> Task :url_launcher_android:generateReleaseAssets UP-TO-DATE
+> Task :url_launcher_android:mergeReleaseAssets
+> Task :app:mergeReleaseAssets
+> Task :app:copyFlutterAssetsRelease
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:processReleaseNavigationResources
+> Task :app:javaPreCompileRelease
+> Task :android_file_picker:prepareReleaseArtProfile UP-TO-DATE
+> Task :jni:prepareReleaseArtProfile UP-TO-DATE
+> Task :jni_flutter:prepareReleaseArtProfile UP-TO-DATE
+> Task :sqflite_android:prepareReleaseArtProfile UP-TO-DATE
+> Task :url_launcher_android:prepareReleaseArtProfile UP-TO-DATE
+> Task :jni_flutter:bundleLibCompileToJarRelease
+> Task :sqflite_android:bundleLibCompileToJarRelease
+> Task :app:parseReleaseLocalResources
+> Task :android_file_picker:mapReleaseSourceSetPaths
+> Task :app:mergeReleaseArtProfile
+> Task :app:generateReleaseRFile
+> Task :android_file_picker:compileReleaseLibraryResources
+> Task :android_file_picker:writeReleaseAarMetadata
+> Task :jni_flutter:writeReleaseAarMetadata
+> Task :sqflite_android:writeReleaseAarMetadata
+> Task :jni:writeReleaseAarMetadata
+> Task :url_launcher_android:writeReleaseAarMetadata
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:checkReleaseAarMetadata
+> Task :app:compileReleaseNavigationResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :android_file_picker:extractDeepLinksRelease
+> Task :app:extractDeepLinksRelease
+> Task :jni:extractDeepLinksRelease
+> Task :jni_flutter:extractDeepLinksRelease
+> Task :sqflite_android:extractDeepLinksRelease
+> Task :url_launcher_android:extractDeepLinksRelease
+> Task :jni:mapReleaseSourceSetPaths
+> Task :jni_flutter:mapReleaseSourceSetPaths
+> Task :sqflite_android:mapReleaseSourceSetPaths
+> Task :url_launcher_android:mapReleaseSourceSetPaths
+> Task :jni_flutter:compileReleaseLibraryResources
+> Task :sqflite_android:compileReleaseLibraryResources
+> Task :url_launcher_android:compileReleaseLibraryResources
+> Task :jni:compileReleaseLibraryResources
+> Task :jni_flutter:bundleLibRuntimeToJarRelease
+> Task :jni:bundleLibRuntimeToJarRelease
+> Task :sqflite_android:bundleLibRuntimeToJarRelease
+> Task :app:extractProguardFiles
+> Task :jni:processReleaseJavaRes NO-SOURCE
+> Task :jni_flutter:processReleaseJavaRes NO-SOURCE
+> Task :sqflite_android:processReleaseJavaRes NO-SOURCE
+> Task :app:mergeReleaseStartupProfile UP-TO-DATE
+> Task :sqflite_android:processReleaseManifest
+
+> Task :jni:processReleaseManifest
+package="com.github.dart_lang.jni" found in source AndroidManifest.xml: D:\DevTools\ReClass\Flutter\PubCache\hosted\pub.dev\jni-1.0.3\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.github.dart_lang.jni" from the source AndroidManifest.xml: D:\DevTools\ReClass\Flutter\PubCache\hosted\pub.dev\jni-1.0.3\android\src\main\AndroidManifest.xml.
+
+> Task :android_file_picker:processReleaseManifest
+package="com.mr.flutter.plugin.filepicker" found in source AndroidManifest.xml: D:\DevTools\ReClass\Flutter\PubCache\hosted\pub.dev\android_file_picker-1.1.0\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.mr.flutter.plugin.filepicker" from the source AndroidManifest.xml: D:\DevTools\ReClass\Flutter\PubCache\hosted\pub.dev\android_file_picker-1.1.0\android\src\main\AndroidManifest.xml.
+
+> Task :jni_flutter:processReleaseManifest
+package="com.github.dart_lang.jni_flutter" found in source AndroidManifest.xml: D:\DevTools\ReClass\Flutter\PubCache\hosted\pub.dev\jni_flutter-1.0.3\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.github.dart_lang.jni_flutter" from the source AndroidManifest.xml: D:\DevTools\ReClass\Flutter\PubCache\hosted\pub.dev\jni_flutter-1.0.3\android\src\main\AndroidManifest.xml.
+
+> Task :url_launcher_android:processReleaseManifest
+package="io.flutter.plugins.urllauncher" found in source AndroidManifest.xml: D:\DevTools\ReClass\Flutter\PubCache\hosted\pub.dev\url_launcher_android-6.3.33\android\src\main\AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="io.flutter.plugins.urllauncher" from the source AndroidManifest.xml: D:\DevTools\ReClass\Flutter\PubCache\hosted\pub.dev\url_launcher_android-6.3.33\android\src\main\AndroidManifest.xml.
+
+> Task :app:compressReleaseAssets
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:processReleaseMainManifest
+> Task :app:outputReleaseAppLinkSettings
+> Task :app:mergeReleaseResources
+> Task :app:processReleaseManifest
+> Task :android_file_picker:extractProguardFiles
+> Task :android_file_picker:prepareLintJarForPublish UP-TO-DATE
+> Task :jni:createFullJarRelease
+> Task :jni:extractProguardFiles
+> Task :app:mergeReleaseNativeDebugMetadata
+> Task :jni:generateReleaseLintModel
+> Task :jni:prepareLintJarForPublish UP-TO-DATE
+> Task :jni_flutter:createFullJarRelease
+> Task :jni_flutter:extractProguardFiles
+> Task :jni_flutter:generateReleaseLintModel
+> Task :jni_flutter:prepareLintJarForPublish UP-TO-DATE
+> Task :sqflite_android:createFullJarRelease
+> Task :sqflite_android:extractProguardFiles
+> Task :sqflite_android:generateReleaseLintModel
+> Task :sqflite_android:prepareLintJarForPublish UP-TO-DATE
+> Task :url_launcher_android:extractProguardFiles
+> Task :url_launcher_android:prepareLintJarForPublish UP-TO-DATE
+> Task :app:processReleaseManifestForPackage
+> Task :android_file_picker:stripReleaseDebugSymbols NO-SOURCE
+> Task :android_file_picker:copyReleaseJniLibsProjectAndLocalJars
+> Task :android_file_picker:checkReleaseAarMetadata
+> Task :android_file_picker:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :jni_flutter:stripReleaseDebugSymbols NO-SOURCE
+> Task :jni_flutter:copyReleaseJniLibsProjectAndLocalJars
+> Task :jni_flutter:checkReleaseAarMetadata
+> Task :jni_flutter:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :jni_flutter:extractReleaseAnnotations
+> Task :jni_flutter:mergeReleaseConsumerProguardFiles
+> Task :jni:checkReleaseAarMetadata
+> Task :jni:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :jni:extractReleaseAnnotations
+> Task :jni:mergeReleaseConsumerProguardFiles
+> Task :sqflite_android:stripReleaseDebugSymbols NO-SOURCE
+> Task :sqflite_android:copyReleaseJniLibsProjectAndLocalJars
+> Task :sqflite_android:checkReleaseAarMetadata
+> Task :sqflite_android:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :sqflite_android:extractReleaseAnnotations
+> Task :sqflite_android:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :jni:stripReleaseDebugSymbols
+> Task :jni:copyReleaseJniLibsProjectAndLocalJars
+> Task :url_launcher_android:stripReleaseDebugSymbols NO-SOURCE
+> Task :url_launcher_android:copyReleaseJniLibsProjectAndLocalJars
+> Task :url_launcher_android:checkReleaseAarMetadata
+> Task :url_launcher_android:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :android_file_picker:writeReleaseLintModelMetadata
+> Task :sqflite_android:mergeReleaseJavaResource
+> Task :jni:mergeReleaseJavaResource
+> Task :jni_flutter:mergeReleaseJavaResource
+> Task :jni_flutter:syncReleaseLibJars
+> Task :app:processReleaseResources
+> Task :jni_flutter:bundleReleaseLocalLintAar
+> Task :jni:syncReleaseLibJars
+> Task :jni:bundleReleaseLocalLintAar
+> Task :sqflite_android:syncReleaseLibJars
+> Task :sqflite_android:bundleReleaseLocalLintAar
+> Task :jni:writeReleaseLintModelMetadata
+> Task :jni_flutter:writeReleaseLintModelMetadata
+> Task :sqflite_android:writeReleaseLintModelMetadata
+> Task :url_launcher_android:writeReleaseLintModelMetadata
+> Task :jni:generateReleaseLintVitalModel
+> Task :jni_flutter:generateReleaseLintVitalModel
+> Task :sqflite_android:generateReleaseLintVitalModel
+> Task :app:collectReleaseDependencies
+> Task :app:sdkReleaseDependencyData
+> Task :app:validateSigningRelease
+> Task :app:writeReleaseAppMetadata
+> Task :app:writeReleaseSigningConfigVersions
+> Task :url_launcher_android:compileReleaseKotlin
+
+> Task :android_file_picker:compileReleaseKotlin
+w: file:///D:/DevTools/ReClass/Flutter/PubCache/hosted/pub.dev/android_file_picker-1.1.0/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerDelegate.kt:79:89 Elvis operator (?:) always returns the left operand of non-nullable type 'Uri'.
+w: file:///D:/DevTools/ReClass/Flutter/PubCache/hosted/pub.dev/android_file_picker-1.1.0/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerPlugin.kt:151:49 Unnecessary safe call on a non-null receiver of type 'HashMap<*, *>'.
+w: file:///D:/DevTools/ReClass/Flutter/PubCache/hosted/pub.dev/android_file_picker-1.1.0/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerPlugin.kt:152:38 Unnecessary safe call on a non-null receiver of type 'HashMap<*, *>'.
+w: file:///D:/DevTools/ReClass/Flutter/PubCache/hosted/pub.dev/android_file_picker-1.1.0/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerPlugin.kt:153:60 Unnecessary safe call on a non-null receiver of type 'HashMap<*, *>'.
+w: file:///D:/DevTools/ReClass/Flutter/PubCache/hosted/pub.dev/android_file_picker-1.1.0/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FilePickerPlugin.kt:164:70 Unchecked cast of 'Any?' to 'ArrayList<String>?'.
+w: file:///D:/DevTools/ReClass/Flutter/PubCache/hosted/pub.dev/android_file_picker-1.1.0/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FileUtils.kt:623:45 'enum entry WEBP: Bitmap.CompressFormat' is deprecated. Deprecated in Java.
+w: file:///D:/DevTools/ReClass/Flutter/PubCache/hosted/pub.dev/android_file_picker-1.1.0/android/src/main/kotlin/com/mr/flutter/plugin/filepicker/FileUtils.kt:631:35 'enum entry WEBP: Bitmap.CompressFormat' is deprecated. Deprecated in Java.
+
+> Task :url_launcher_android:compileReleaseJavaWithJavac
+> Task :android_file_picker:compileReleaseJavaWithJavac NO-SOURCE
+> Task :android_file_picker:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :url_launcher_android:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :android_file_picker:exportReleaseConsumerProguardFiles
+> Task :url_launcher_android:exportReleaseConsumerProguardFiles UP-TO-DATE
+> Task :android_file_picker:bundleLibCompileToJarRelease
+> Task :android_file_picker:bundleLibRuntimeToJarRelease
+> Task :android_file_picker:processReleaseJavaRes
+> Task :url_launcher_android:bundleLibCompileToJarRelease
+> Task :url_launcher_android:bundleLibRuntimeToJarRelease
+> Task :url_launcher_android:processReleaseJavaRes
+> Task :android_file_picker:generateReleaseLintVitalModel
+> Task :android_file_picker:createFullJarRelease
+> Task :android_file_picker:generateReleaseLintModel
+> Task :url_launcher_android:createFullJarRelease
+> Task :url_launcher_android:generateReleaseLintModel
+> Task :android_file_picker:extractReleaseAnnotations
+> Task :android_file_picker:mergeReleaseConsumerProguardFiles
+> Task :url_launcher_android:extractReleaseAnnotations
+> Task :url_launcher_android:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :url_launcher_android:generateReleaseLintVitalModel
+> Task :android_file_picker:mergeReleaseJavaResource
+> Task :url_launcher_android:mergeReleaseJavaResource
+> Task :android_file_picker:syncReleaseLibJars
+> Task :android_file_picker:bundleReleaseLocalLintAar
+> Task :app:compileReleaseKotlin
+> Task :url_launcher_android:syncReleaseLibJars
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :app:processReleaseJavaRes
+> Task :app:generateReleaseLintVitalReportModel
+> Task :url_launcher_android:bundleReleaseLocalLintAar
+> Task :app:expandReleaseArtProfileWildcards
+> Task :app:mergeReleaseJavaResource
+> Task :jni:lintVitalAnalyzeRelease
+> Task :jni_flutter:lintVitalAnalyzeRelease
+> Task :sqflite_android:lintVitalAnalyzeRelease
+> Task :app:minifyReleaseWithR8
+> Task :app:convertShrunkResourcesToBinaryRelease
+> Task :app:optimizeReleaseResources
+> Task :app:compileReleaseArtProfile
+> Task :android_file_picker:lintVitalAnalyzeRelease
+> Task :url_launcher_android:lintVitalAnalyzeRelease
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:lintVitalReportRelease
+> Task :app:lintVitalRelease
+> Task :app:packageRelease
+> Task :app:createReleaseApkListingFileRedirect
+> Task :app:assembleRelease
+
+[Incubating] Problems report is available at: file:///R:/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.3.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 1m 54s
+257 actionable tasks: 226 executed, 31 up-to-date

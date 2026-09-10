@@ -1,31 +1,13 @@
 # Re课表
 
-离线读取 `.xlsx` 和文字型 `.pdf` 的 Flutter 手机课表。应用只有三个主页面：今天、本周、设置；课程和学期信息仅保存在设备本地。
+离线读取 `.xlsx` 和文字型 `.pdf` 的 Flutter 手机课表。课程和学期信息仅保存在设备本地，开源无广告。
 
-## 本机工具目录
+## 如何使用
 
-- Flutter：`D:\DevTools\ReClass\Flutter`
-- JDK：`D:\DevTools\ReClass\JDK`
-- Android SDK：`D:\DevTools\ReClass\AndroidSDK`
-- Android 用户配置：`D:\DevTools\ReClass\AndroidUser`
-- Gradle 缓存：`D:\DevTools\ReClass\Gradle`
-- 下载缓存：`D:\DevTools\ReClass\Downloads`
-
-打开 PowerShell 后，在项目目录运行：
-
-```powershell
-. .\toolchain.ps1
-flutter pub get
-flutter test
-flutter run
-```
-
-构建 Android 测试包：
-
-```powershell
-. .\toolchain.ps1
-flutter build apk --debug
-```
+点开设置，选择学期的第一周，导入如下图的Excel或PDF，即可。
+![课表导入示意图1](./PDF.png)
+![课表导入示意图2](./Excel.png)
+PS：若节课时间不对可在每周课表中调整默认时间
 
 ## 导入边界
 
@@ -33,4 +15,3 @@ flutter build apk --debug
 - 支持带可提取文字的 PDF，以及 `/UniGB-UCS2-H` 字体映射缺失的教务系统 PDF。
 - 不支持 `.xls`、CSV、图片、扫描件或加密 PDF。
 - 导入前提供课程校对；确认后在单个数据库事务中替换当前课表。
-- 私人课表样例应放在 `test/private_fixtures/`，该目录不会提交。
